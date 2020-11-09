@@ -10,7 +10,6 @@ interest <- all %>%
   filter(institution_type == "state" & 
            grade == "all") 
 
-
 # select columns containing # students, pct met and above values, & dimensions
 tab_prep <- interest %>%
   select(group_id, subgroup_id, test_id, students_tested, pct_met_and_above, area_1_percentage_above_standard, area_2_percentage_above_standard, area_3_percentage_above_standard, area_4_percentage_above_standard)
@@ -44,7 +43,7 @@ tab_prep_clean <- tab_prep_long %>%
   arrange(group_id)
 
 # save new data to a csv
-write.csv(tab_prep_clean, "california-student-performance/data/ca_state_data_for_tableau.csv")
+write.csv(tab_prep_clean, "california-student-performance/clean_data/ca_state_data_for_tableau.csv")
 
 
 

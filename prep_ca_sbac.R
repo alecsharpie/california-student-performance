@@ -14,14 +14,26 @@ interest <- all %>%
 tab_prep <- interest %>%
   select(group_id, subgroup_id, test_id, students_tested, pct_met_and_above, area_1_percentage_above_standard, area_2_percentage_above_standard, area_3_percentage_above_standard, area_4_percentage_above_standard)
 
+# filter for english and math tests
+tab_prep_ela <- tab_prep %>%
+  filter(test_id == "SB_ELA")
 
-# pivot the data into tody format, so all % above or met value is in a single column
-tab_prep_long <- tab_prep %>%
-  pivot_longer(contains("above"), names_to = "test_type", values_to = "pct_met_and_above")
+tab_prep_math <- tab_prep %>%
+  filter(test_id == "SB_MATH")
+
+# pivot the ELA data into tidy format, so all % above or met value is in a single column
+tab_prep_long_ela <- tab_prep_ela %>%
+  pivot_longer(contains("above"), names_to = "test_type", values_to = "ela_pct_met_and_above")
+
+# pivot the MATH data into tidy format, so all % above or met value is in a single column
+tab_prep_long_math <- tab_prep_math %>%
+  pivot_longer(contains("above"), names_to = "test_type", values_to = "math_pct_met_and_above")
+
+#rejoin math and english data
+tab_prep_long <- bind_rows(tab_prep_long_math, tab_prep_long_ela)
 
 # get different test names
 levels(as.factor(tab_prep$test_name))
-
 
 # add a single column containing correct test names, creating conditionally from test_id and test_type columns and then remove them
 tab_prep_clean <- tab_prep_long %>%
